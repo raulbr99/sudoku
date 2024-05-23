@@ -1,0 +1,66 @@
+---
+// CELL COMPONENT
+
+interface Props {
+  number: number;
+  isVisible: boolean;
+  board: any[][];
+  onUpdate: () => void;
+}
+
+const { number, isVisible, onUpdate } = Astro.props;
+
+function handleInputChange(event: Event) {
+  const target = event.target as HTMLInputElement;
+  const value = parseInt(target.value, 10);
+  if (!isNaN(value)) {
+    onUpdate(value); // Llama a la función de actualización con el nuevo valor
+  }
+}
+---
+
+<div class="border border-black size-12 flex items-center justify-center text-3xl">
+  {
+    isVisible ? (
+      <span>{number}</span>
+    ) : (
+    <input type="number" min="1" max="9" class="cell" value={number} oninput={handleInputChange} />
+    )
+  }
+</div>
+
+<script>
+  const cells = document.querySelectorAll('input.cell');
+
+  cells.forEach(cell => {
+    cell.addEventListener('input', (event) => {
+      const input = event.target as HTMLInputElement;
+      console.log(input.value); 
+
+    });
+  });
+</script>
+
+
+<style>
+  input[type="number"] {
+    -webkit-appearance: none; /* Remueve la apariencia por defecto en WebKit/Blink */
+    -moz-appearance: textfield; /* Remueve la apariencia por defecto en Firefox */
+    appearance: none; /* Método futuro-estándar para hacer lo mismo */
+    margin: 0; /* Remover el margen que algunos navegadores añaden */
+    border: none; /* Remueve el borde */
+    background: transparent; /* Fondo transparente */
+    outline: none; /* Remueve el contorno al enfocar */
+    padding: 0; /* Remueve el padding */
+    box-shadow: none; /* Remueve las sombras internas */
+    font-size: inherit; /* Usa el tamaño de fuente del elemento padre */
+    text-align: center; /* Alinea el texto al centro */
+  }
+
+  /* Opcional: Estilo para remover los botones de incremento/decremento en Firefox */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+</style>
