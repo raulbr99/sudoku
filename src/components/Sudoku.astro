@@ -1,0 +1,46 @@
+---
+// SUDOKU COMPONENTE
+import Cell from "./Cell.astro";
+import { generateSudoku, makePuzzle } from "../lib/sudoku";
+
+const board = generateSudoku();
+const puzzle = makePuzzle(board, 40);
+
+//console.log(puzzle)
+function getBorderClass(i: number, j: number) {
+  let classes = "";
+  // Añade un borde más grueso a la derecha de las columnas 2 y 5
+  if (j === 2 || j === 5) {
+    classes += "border-r-2 border-black";
+  }
+  // Añade un borde más grueso en la parte inferior de las filas 2 y 5
+  if (i === 2 || i === 5) {
+    classes += " border-b-2 border-black";
+  }
+  return classes;
+}
+
+function updateBoard(i: number, j: number) {
+  const newPuzzle = [...puzzle];
+  newPuzzle[i][j].isVisible = true;
+}
+---
+
+<div class="border-2 border-black">
+  {
+    puzzle.map((row, i) => (
+      <div class="grid grid-cols-9">
+        {row.map((cell, j) => (
+          <div class={getBorderClass(i, j)}>
+            <Cell
+              number={board[i][j].number}
+              isVisible={board[i][j].isVisible}
+              board={puzzle}
+              onUpdate={() => updateBoard(i, j)}
+            />
+          </div>
+        ))}
+      </div>
+    ))
+  }
+</div>
