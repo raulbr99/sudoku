@@ -1,0 +1,9 @@
+---
+import Cell from "./Cell.astro";
+---
+
+<div class="grid grid-cols-3 border-2 border-black">
+    { Array.from({ length: 9}, (_, i) => (
+        <Cell key={i} />
+    )) }
+</div>
